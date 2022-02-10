@@ -1,0 +1,33 @@
+% Abstract template for Physics Days 2022
+\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{graphicx}
+
+\usepackage[left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}
+
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\renewcommand{\title}[1]{{\bf\MakeUppercase{#1}}}
+
+\renewenvironment{thebibliography}[1]
+                 {\list{\@biblabel{\@arabic\c@enumiv}}%
+                   {\settowidth\labelwidth{\@biblabel{#1}}%
+                     \leftmargin\labelwidth
+                     \advance\leftmargin\labelsep
+                     \@openbib@code
+                     \usecounter{enumiv}%
+                     \let\p@enumiv\@empty
+                     \itemsep -4pt
+                     \topsep 0pt
+                     \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+                   \sloppy\clubpenalty4000\widowpenalty4000%
+                   \sfcode`\.\@m}
+                 {\def\@noitemerr
+                   {\@latex@warning{Empty `thebibliography' environment}}%
+                   \endlist}
+
+\pagestyle{empty}
