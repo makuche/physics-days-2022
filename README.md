@@ -1,4 +1,19 @@
 # Multi-fidelity machine learning to accelerate materials research
+## About this project
+
+This repository contains research that I have presented on
+the Physics Days 2022. The main objective was to investigate the
+effectiveness of **Transfer/Mult-task Learning on Bayesian
+Optimization**, please read the abstract below for a more
+detailed introduction.
+
+Structure of the repository:
+- `data` Contains raw data files, used to produce the figures.
+- `docs` : Abstract and poster for the Physics Days 2022 can be found here.
+- `results` : Figures and Tables used for the documents.
+- `scripts/src` : Python scripts and Jupyter Notebooks to preprocess and plot data.
+---
+---
 ## Authors
 **M. Kuchelmeister**¹, J. Lögfren¹, M. Todorović², and P. Rinke¹
 
@@ -42,15 +57,15 @@ structure-search problems.
 
 ---
 ## Results
-TODO
+TODO : Add figures from the poster here
 
+
+<p class="aligncenter">
 <style>
 .aligncenter {
     text-align: center;
 }
 </style>
-
-<p class="aligncenter">
     <img src="docs/abstract/model_alanine_results.png" alt="Model and Test System" width="750">
 </p>
 

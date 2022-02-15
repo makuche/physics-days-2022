@@ -1,3 +1,6 @@
 misc/*
 src.egg-info/
 env/
+env/
+docs/tmp/
+data/
