@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.transforms as mtransforms
+import matplotlib as mpl
 
 from pathlib import Path
 from matplotlib.backends.backend_agg import FigureCanvas
@@ -16,10 +18,12 @@ pes_files = ['low_fi', 'high_fi', 'ultra_high_fi']
 
 FILE_PATHS = [DATA_DIR / f'{pes_file}.json' for pes_file in pes_files]
 NAMES = ['Low', 'High', 'Ultra high']
-TRUEMINS_2D = {'Low':         17.4815,
-               'High': -203012.37364,
-               'Ultra high': -202861.33811}
-
+truemins = [17.4815,         #  Low fidelity
+               -203012.37364,   #  High fidelity
+               -202861.33811]   #  Ultra high fidelity
+SMALL_SIZE, MEDIUM_SIZE, LARGE_SIZE = 18, 22, 25
+mpl.rc('xtick', labelsize=SMALL_SIZE)
+mpl.rc('ytick', labelsize=SMALL_SIZE)
 
 
 class DummySettings:
@@ -45,17 +49,19 @@ def calculate_drop_shadow(z, l_0, l_1, sigma=5, alpha=.5):
     #A =
 
 def model(data):
-    fig, axs = plt.subplots(1, 3, figsize=(21, 5), sharex=True, sharey=True)
+    fig, axs = plt.subplot_mosaic([['LF', 'HF', 'UHF']],
+        figsize=(10, 4), sharex=True, sharey=True)
 
-    for ax, fidelity_data in zip(axs, data):
-        settings, model_data = data['STS'], data['model_data']
+    for ax, fid_data, truemin in zip(axs, data, truemins):
+        settings, model_data = fid_data['STS'], fid_data['model_data']
+        xhat, acqs = fid_data['xhat'], fid_data['acqs']
         dim = settings.dim
-        coords, mu, nu = model_data[:, :dim], model_data[:, -2], model_data[:, -1]
+        coords, mu = model_data[:, :dim], model_data[:, -2]
         slice_x, slice_y = settings.pp_m_slice[0], settings.pp_m_slice[1]
         num_slices = settings.pp_m_slice[2]
-        num_levels = 20
+        num_levels = 12
         x, y = coords[:, slice_x], coords[:, slice_y]
-        z = mu.reshape(num_slices, num_slices)
+        z = mu.reshape(num_slices, num_slices) - truemin
         dz = (z.max() - z.min()) / num_levels
         levels = np.linspace(z.min(), z.max(), num_levels, endpoint=True)
         # cmap = plt.get_cmap("RdBu")
@@ -63,10 +69,32 @@ def model(data):
         #             mu.reshape(num_slices, num_slices), levels, colors='k',
         #             zorder=1)
         # plt.imshow(z)
-        ax.contourf(x[:num_slices], y[::num_slices], z, levels=num_levels,
-                    zorder=0, cmap='viridis')
+        im = axs[ax].contourf(x[:num_slices], y[::num_slices], z, levels=num_levels,
+                    zorder=0, cmap='viridis')  # RdBu
+        axs[ax].scatter(*xhat, c='red', marker='*', s=250, zorder=2,
+                   label='Minimum')
+        trans = mtransforms.ScaledTranslation(10/72, -7/72,
+                                              fig.dpi_scale_trans)
+        axs[ax].text(0, 1, ax, transform=axs[ax].transAxes + trans,
+                     fontsize=LARGE_SIZE, verticalalignment='top',
+                     bbox=dict(facecolor='white', alpha=0.6,
+                     edgecolor='white'))
+        axs[ax].set_xticks([0, 150, 300])
+        axs[ax].set_yticks([0, 150, 300], fontsize=LARGE_SIZE)
+        #axs[ax].xticks(fontsize=SMALL_SIZE)
 
-    plt.show()
+    axs['UHF'].legend(loc='upper right', fontsize=SMALL_SIZE,
+                      handletextpad=-0.2)
+    #cax,kw = mpl.colorbar.make_axes([axs[ax] for ax in axs])
+    axes = [axs[ax] for ax in axs]
+    cb = plt.colorbar(im, ax=axes, shrink=.8, orientation='horizontal',
+                      location='bottom')
+    cb.set_label('E [kcal/mol]', fontsize=SMALL_SIZE)
+
+    #fig.colorbar(im, ax=cax, shrink=0.8, location='bottom')
+    fig.subplots_adjust(left=0.07, right=0.98, top=0.98,
+                        bottom=0.32, wspace=0.03)
+    plt.savefig(f'{RESULTS_DIR}/pot_energy_surface.png', dpi=600)
 
 
 def main():
