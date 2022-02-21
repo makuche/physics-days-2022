@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import argparse
 from pathlib import Path
+from matplotlib.legend_handler import HandlerTuple
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 RESULTS_DIR = PROJECT_DIR / 'results/'
@@ -11,11 +12,13 @@ RESULTS_DIR = PROJECT_DIR / 'results/'
 FIG_LABELS = {'LF ➔ HF': ['a)', 'b)'],
                  'LF ➔ UHF': ['c)', 'd)'],
                  'HF ➔ UHF': ['e)', 'f)']}
-ORANGE, GREEN = '#FF6347', '#32CD32'
-PLOT_COLORS = {2: ORANGE, 4: GREEN}
-SMALL_SIZE, MEDIUM_SIZE, LARGE_SIZE = 14, 18, 22
+BLUE, RED, GREEN, ORANGE = '#000082', '#FE0000', '#32CD32', '#FF8C00'
+PLOT_COLORS = {2: BLUE, 4: GREEN}
+SYMBOLS = {2: 'o', 4: 's'}
+SMALL_SIZE, MEDIUM_SIZE, LARGE_SIZE = 18, 20, 22
 mpl.rc('xtick', labelsize=SMALL_SIZE)
 mpl.rc('ytick', labelsize=SMALL_SIZE)
+
 
 def main(args):
     df = pd.read_csv(PROJECT_DIR / 'data/cpu_time_reductions.csv')
@@ -27,30 +30,34 @@ def main(args):
 
 
 def plot_transfer_learning_overview(df):
-    fig, axs = plt.subplots(1, 2, figsize=(6, 3), sharey=True)
+    fig = plt.figure(figsize=(5, 4))
+    cm = plt.cm.get_cmap('PiYG', 2)
     initpts = df.loc[:, 'Secondary initial points']
     cpu_reduction = df.loc[:, 'CPU time relative to baseline']
     correlation = df.loc[:, 'Correlation']
     dimension = df.loc[:, 'Dimension'].to_list()
-    colors = [PLOT_COLORS[dim] for dim in dimension]
+    markers = [SYMBOLS[dim] for dim in dimension]
     labels = np.array([f'{dim}D' for dim in dimension])
-    for x, x_c, y, c, l in zip(initpts, correlation, cpu_reduction, colors,
-                               labels):
-        axs[0].scatter(x, 100*(1-y), c=c, label=l, alpha=.7)
-        axs[1].scatter(x_c, 100*(1-y), c=c, label=l, alpha=.7)
-    axs[0].set_ylabel('CPU time\nsavings in %', fontsize=SMALL_SIZE)
-    axs[0].set_xlabel('Number of\nLow-Fi Data', fontsize=SMALL_SIZE)
-    axs[1].set_xlabel('Correlation\nbetween fidelities', fontsize=SMALL_SIZE)
-    axs[0].set_yticks([25, 50, 75])
-    axs[0].set_xticks([50, 100, 150, 200])
-    axs[1].set_xticks([.95, .975, 1.0])
-    handles, labels = plt.gca().get_legend_handles_labels()
-    by_label = dict(zip(labels, handles))
-    axs[1].legend(by_label.values(), by_label.keys(), fontsize=SMALL_SIZE,
-               loc='lower right')
-    #fig.suptitle('CPU time savings', fontsize=MEDIUM_SIZE)
+    corr_min, corr_max = correlation.min(), correlation.max()
+    for x, y, c, l, marker in zip(initpts, cpu_reduction, correlation,
+                                labels, markers):
+        sc = plt.scatter(x, 100*(1-y), c=c, label=l, marker=marker, s=300,
+                        vmin=corr_min, vmax=corr_max, cmap=cm)
+    cb = plt.colorbar(sc)
+    cb.set_label('Pearson correlation', fontsize=SMALL_SIZE)
+    plt.ylabel('CPU time savings in %', fontsize=SMALL_SIZE)
+    plt.xlabel('Number of Low-Fi Data', fontsize=SMALL_SIZE)
+    plt.yticks([25, 50, 75])
+    plt.xticks([50, 100, 150, 200])
+    handles, _ = plt.gca().get_legend_handles_labels()
+    handles = np.delete(np.asarray(handles), [0,3])
+    plt.legend([(handles[0], handles[1]), (handles[2], handles[3])],
+               ['2D', '4D'], fontsize=SMALL_SIZE, loc='center left',
+               handler_map={tuple: HandlerTuple(ndivide=None, pad=.7)})
+    plt.xlim(20, 215)
+    plt.ylim(15, 80)
     fig.tight_layout()
-    plt.savefig(f'{RESULTS_DIR}/tran_learn_overview.png')
+    plt.savefig(f'{RESULTS_DIR}/tran_learn_overview.pdf')
 
 
 if __name__ == '__main__':
