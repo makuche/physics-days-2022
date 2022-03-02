@@ -41,9 +41,9 @@ def plot_transfer_learning_overview(df):
     corr_min, corr_max = correlation.min(), correlation.max()
     for x, y, c, l, marker in zip(initpts, cpu_reduction, correlation,
                                 labels, markers):
-        sc = plt.scatter(x, 100*(1-y), c=c, label=l, marker=marker, s=300,
-                        vmin=corr_min, vmax=corr_max, cmap=cm)
-    cb = plt.colorbar(sc)
+       sc = plt.scatter(x, 100*(1-y), c=c, label=l, marker=marker, s=300,
+                       vmin=corr_min, vmax=corr_max, cmap=cm)
+    cb = plt.colorbar(sc, ticks=[0.95, 0.97, 0.99])
     cb.set_label('Pearson correlation', fontsize=SMALL_SIZE)
     plt.ylabel('CPU time savings in %', fontsize=SMALL_SIZE)
     plt.xlabel('Number of Low-Fi Data', fontsize=SMALL_SIZE)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                         help="Show (and don't save) plots.")
     parser.add_argument('-d', '--dimension',
                         type=int,
-                        default='2',
+                        default='10',    # Number != {2,4} to plot all points
                         help="Chose between 2 or 4 (2D or 4D).")
     parser.add_argument('-t', '--tolerance',
                         type=float,

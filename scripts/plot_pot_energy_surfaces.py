@@ -80,11 +80,9 @@ def model(data):
                      bbox=dict(facecolor='white', alpha=0.6,
                      edgecolor='white'))
         axs[ax].set_xticks([0, 150, 300])
-        axs[ax].set_yticks([0, 150, 300], fontsize=LARGE_SIZE)
-        #axs[ax].xticks(fontsize=SMALL_SIZE)
-
-    axs['UHF'].legend(loc='upper right', fontsize=SMALL_SIZE,
-                      handletextpad=-0.2)
+        axs[ax].set_yticks([0, 150, 300], fontsize=MEDIUM_SIZE)
+        axs[ax].set_xlabel(r'$d_1$  [deg]', fontsize=MEDIUM_SIZE)
+    axs['LF'].set_ylabel(r'$d_2$ [deg]', fontsize=MEDIUM_SIZE)
     #cax,kw = mpl.colorbar.make_axes([axs[ax] for ax in axs])
     axes = [axs[ax] for ax in axs]
     cb = plt.colorbar(im, ax=axes, shrink=.8, orientation='horizontal',
@@ -92,9 +90,9 @@ def model(data):
     cb.set_label('E [kcal/mol]', fontsize=SMALL_SIZE)
 
     #fig.colorbar(im, ax=cax, shrink=0.8, location='bottom')
-    fig.subplots_adjust(left=0.07, right=0.98, top=0.98,
-                        bottom=0.32, wspace=0.03)
-    plt.savefig(f'{RESULTS_DIR}/pot_energy_surface.png', dpi=600)
+    fig.subplots_adjust(left=0.1, right=0.98, top=0.99,
+                        bottom=0.42, wspace=0.05)
+    plt.savefig(f'{RESULTS_DIR}/pot_energy_surface.png', dpi=300)
 
 
 def main():
