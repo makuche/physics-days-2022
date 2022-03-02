@@ -1,7 +1,12 @@
 # Multi-fidelity machine learning to accelerate materials research
 ## About this project
 
-This repository contains research on multi-fidelity Bayesian optimization, that I have presented on the conference ['Physics Days 2022'](https://physicsdays2022.aalto.fi/). The main objective was to investigate the performance gain (in terms of computation time) of applying **Transfer learning on Bayesian Optimization for materials science research**. Please read the abstract below for a more detailed introduction.
+This repository contains research on multi-fidelity Bayesian optimization,
+that I have presented on the conference ['Physics Days 2022'](https://physicsdays2022.aalto.fi/).
+The main objective was to investigate the performance gain (in terms of computation time) of applying
+**Transfer learning on Bayesian Optimization for materials science research**.
+Please read the abstract below for a more detailed introduction.
+
 
 Structure of the repository:
 - `data` Contains raw data files, used to produce the figures.
