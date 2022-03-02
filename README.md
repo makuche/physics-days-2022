@@ -1,11 +1,7 @@
 # Multi-fidelity machine learning to accelerate materials research
 ## About this project
 
-This repository contains research that I have presented on
-the Physics Days 2022. The main objective was to investigate the
-effectiveness of **Transfer/Mult-task Learning on Bayesian
-Optimization**, please read the abstract below for a more
-detailed introduction.
+This repository contains research on multi-fidelity Bayesian optimization, that I have presented on the conference ['Physics Days 2022'](https://physicsdays2022.aalto.fi/). The main objective was to investigate the performance gain (in terms of computation time) of applying **Transfer learning on Bayesian Optimization for materials science research**. Please read the abstract below for a more detailed introduction.
 
 Structure of the repository:
 - `data` Contains raw data files, used to produce the figures.
@@ -15,11 +11,13 @@ Structure of the repository:
 ---
 ---
 ## Authors
-**M. Kuchelmeister**¹, J. Lögfren¹, M. Todorović², and P. Rinke¹
+**M. Kuchelmeister**¹,², J. Lögfren¹, M. Todorović³, and P. Rinke¹
 
 ¹*Department of Applied Physics, Aalto University*
 
-²*Department of Mechanical and Materials Engineering, University of Turku*
+²*Institute for Theoretical Physics I, University of Stuttgart*
+
+³*Department of Mechanical and Materials Engineering, University of Turku*
 
 email: <manuel.kuchelmeister@web.de>
 
@@ -57,16 +55,11 @@ structure-search problems.
 
 ---
 ## Results
-TODO : Add figures from the poster here
+The on the Physics Days 2022 presented poster can be found [here](https://raw.githubusercontent.com/mankuch/physics-days-2022/master/results/poster.png?token=GHSAT0AAAAAABMEMTMFPRPSMAKLZNSNCI2GYRINGDA), here is a rescaled preview:
 
 
 <p class="aligncenter">
-<style>
-.aligncenter {
-    text-align: center;
-}
-</style>
-    <img src="docs/abstract/model_alanine_results.png" alt="Model and Test System" width="750">
+    <img src="results/poster_preview.png" alt="Model and Test System" width="500">
 </p>
 
 ---
