@@ -2,6 +2,7 @@ misc/*
 src.egg-info/
 src/__pycache__
 env/
-env/
-docs/tmp/
+docs/news_article.*
+docs/picture*
+docs/poster.svg
 data/
